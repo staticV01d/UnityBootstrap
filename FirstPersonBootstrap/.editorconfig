@@ -1,0 +1,6 @@
+root = true
+
+[*.cs]
+
+# Private member is unused - Code analyzers don't know that Unity Messages are in fact being used
+dotnet_diagnostic.IDE0051.severity = none
