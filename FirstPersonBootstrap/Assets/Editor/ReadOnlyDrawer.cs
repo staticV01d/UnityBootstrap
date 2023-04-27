@@ -9,6 +9,6 @@ class ReadOnlyDrawer : PropertyDrawer
         GUI.enabled = false;
         EditorGUI.PropertyField(position, property);
         GUI.enabled = true;
-        EditorGUI.LabelField(position, label);
+        EditorGUI.LabelField(position, property.displayName);
     }
 }
