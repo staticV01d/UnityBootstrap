@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractiveSwitch : Interact
+public sealed class InteractiveSwitch : Interact
 {
     // Start is called before the first frame update
     protected override void Start()
