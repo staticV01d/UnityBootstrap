@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public sealed class InteractiveSwitch : Interact
 {
     // Start is called before the first frame update

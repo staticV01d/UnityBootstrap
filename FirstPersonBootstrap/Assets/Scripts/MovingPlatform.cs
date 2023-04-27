@@ -26,7 +26,7 @@ public class MovingPlatform : MonoBehaviour
     TravelPoint currentPoint;
 
     [SerializeField, ReadOnly]
-    int pointIndex = -1;
+    int pointIndex = 0;
 
     [Header("Idling"), SerializeField]
     float idleTime = 3f;
@@ -42,6 +42,7 @@ public class MovingPlatform : MonoBehaviour
     public Color inactiveColor;
 
     bool isOccupied;
+    bool isReverse;
 
     void Awake()
     {
@@ -80,21 +81,27 @@ public class MovingPlatform : MonoBehaviour
 
     void ChooseNextPoint()
     {
-        pointIndex++;
+        currentPoint = points[pointIndex];
+
+        if (isReverse)
+        {
+            pointIndex--;
+        }
+        else
+        {
+            pointIndex++;
+        }
 
         if (pointIndex >= points.Length)
         {
-            if (loop)
-            {
-                pointIndex = 0;
-            }
-            else
-            {
-                pointIndex = points.Length - 1;
-            }
+            pointIndex -= 2;
+            isReverse = true;
         }
-
-        currentPoint = points[pointIndex];
+        else if (pointIndex < 0)
+        {
+            pointIndex = 1;
+            isReverse = false;
+        }
     }
 
     public void SetIsOccupied(bool value)
@@ -131,6 +138,18 @@ public class MovingPlatform : MonoBehaviour
         if (currentState == newState && newState != PlatformState.None) { return; }
 
         nextState = newState;
+
+        OnExitState(currentState);
+        previousState = currentState;
+        currentState = nextState;
+        OnEnterState(nextState);
+    }
+
+    public void ChangeStates(int newState)
+    {
+        if (currentState == (PlatformState)newState && (PlatformState)newState != PlatformState.None) { return; }
+
+        nextState = (PlatformState)newState;
 
         OnExitState(currentState);
         previousState = currentState;
