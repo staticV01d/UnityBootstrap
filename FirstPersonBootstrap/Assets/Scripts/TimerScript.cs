@@ -59,7 +59,7 @@ public class TimerScript : MonoBehaviour
         isTimerRunning = true;
     }
 
-    public void StopTimer()
+    public void StopTimer()  // TODO: implement 'Game Over, try again' screen.
     {
         isTimerRunning = false;
         isTimerSet = false;
