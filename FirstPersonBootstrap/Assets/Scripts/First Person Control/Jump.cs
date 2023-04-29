@@ -9,34 +9,70 @@ public class Jump : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space;
 
     private Rigidbody rb;
+
+    // Ground check 
     private bool isGrounded = true;
+
+    [SerializeField]
+    float rayLength = 1.45f;
+
+    [SerializeField]
+    float groundCheckRadius = .5f;
+
+    /// <summary>
+    /// What layers to reconize as 'Ground'
+    /// </summary>
+    [SerializeField]
+    LayerMask groundMask;
+
+    Move playerMovementComponent;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerMovementComponent = FindAnyObjectByType<Move>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(jumpKey) && isGrounded)
+        if (Input.GetKeyDown(jumpKey) && isGrounded && playerMovementComponent.canMove)
         {
             rb.AddForce(rb.transform.up * jumpStrength, ForceMode.Impulse);
         }
+
+        isGrounded = GroundCheck();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnDrawGizmosSelected()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position + rayLength * (Vector3.up * -1), groundCheckRadius);
     }
 
-    private void OnCollisionExit(Collision collision)
+    bool GroundCheck()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        var ray = new Ray()
         {
-            isGrounded = false;
-        }
+            origin = transform.position,
+            direction = Vector3.up * -1
+        };
+
+        return Physics.SphereCast(ray, groundCheckRadius, rayLength, groundMask, QueryTriggerInteraction.UseGlobal);
     }
+
+    // private void OnCollisionEnter(Collision collision)
+    // {
+    //     if (collision.gameObject.CompareTag("Ground"))
+    //     {
+    //         isGrounded = true;
+    //     }
+    // }
+
+    // private void OnCollisionExit(Collision collision)
+    // {
+    //     if (collision.gameObject.CompareTag("Ground"))
+    //     {
+    //         isGrounded = false;
+    //     }
+    // }
 }

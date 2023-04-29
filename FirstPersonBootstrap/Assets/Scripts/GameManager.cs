@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
-    public KeyCode pauseKey = KeyCode.Escape;
-
-    bool isPaused;
 
     void Awake()
     {
@@ -26,37 +21,23 @@ public class GameManager : MonoBehaviour
         Physics.gravity *= 2;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void LoadScene(string scene)
     {
-
+        SceneManager.LoadScene(scene);
     }
 
-    void Update()
+    public void ReloadCurrentScene()
     {
-        if (Input.GetKeyDown(pauseKey))
-        {
-            TogglePaused();
-        }
+        var scene = SceneManager.GetActiveScene().name;
+        LoadScene(scene);
     }
 
-    void TogglePaused()
+    public void QuitGame()
     {
-        isPaused = !isPaused;
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode();
+#endif
 
-        if (isPaused)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            if (Time.timeScale > 0)
-            { Time.timeScale = 0; }
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            if (Time.timeScale == 0)
-            { Time.timeScale = 1; }
-        }
+        Application.Quit();
     }
 }

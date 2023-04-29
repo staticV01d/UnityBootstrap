@@ -12,6 +12,8 @@ public class Move : MonoBehaviour
     string forwardAxis = "Vertical";
     string strafeAxis = "Horizontal";
 
+    public bool canMove;
+
     float moveSpeed;
     [SerializeField, ReadOnly]
     Vector2 move;
@@ -33,7 +35,7 @@ public class Move : MonoBehaviour
     {
         var movementForce = moveSpeed * move.x * transform.right + moveSpeed * move.y * transform.forward + new Vector3(0, rb.velocity.y, 0);
 
-        if (move != Vector2.zero)
+        if (move != Vector2.zero && canMove)
         {
             rb.AddForce(movementForce);
         }

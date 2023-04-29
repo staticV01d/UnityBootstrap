@@ -262,8 +262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbe4b90e9ea924efdb634490c0d0c915, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 32
-  runSpeed: 42
+  walkSpeed: 35
+  runSpeed: 45
   runKey: 304
   move: {x: 0, y: 0}
 --- !u!114 &5858856649458810834
@@ -278,8 +278,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ba201c2ced9d49488e36e0cb4e6500d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpStrength: 10
+  jumpStrength: 17
   jumpKey: 32
+  rayLength: 0.8
+  groundCheckRadius: 0.3
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8193
 --- !u!114 &5858856649458810833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,3 +299,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crouchAmount: 0.25
   crouchKey: 306
+  inputStyle: 1

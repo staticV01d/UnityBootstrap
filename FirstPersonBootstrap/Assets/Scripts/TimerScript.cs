@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
 public class TimerScript : MonoBehaviour
 {
@@ -14,6 +13,8 @@ public class TimerScript : MonoBehaviour
     public TextMeshProUGUI timerText;
 
     public bool isTimerSet = false;
+
+    public UnityEvent onReachedEnd;
 
     void Start()
     {
@@ -45,8 +46,17 @@ public class TimerScript : MonoBehaviour
 
     public void UpdateUI()
     {
-        timerText.text = $"Time: {timer:#.00}";
+        // timerText.text = $"Time: {timer:#.00}";
+        timerText.text = string.Format("Time:\n{0:00}:{1:00}:{2:000}", GetMinutes(), GetSeconds(), GetMilliseconds());
     }
+
+    float GetMinutes() { return Mathf.FloorToInt(timer / 60); }
+    float GetSeconds() { return Mathf.FloorToInt(timer % 60); }
+#pragma warning disable IDE0047
+    float GetMilliseconds() { return (timer % 1) * 1000; }
+
+    public float Minutes { get { return GetMinutes(); } }
+    public float Seconds { get { return GetSeconds(); } }
 
     public void ResetTimer()
     {
@@ -63,6 +73,8 @@ public class TimerScript : MonoBehaviour
     {
         isTimerRunning = false;
         isTimerSet = false;
+
+        onReachedEnd?.Invoke();
     }
 
     public float CurrentTimer()
